@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Instagram clone</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="complete">
+        <p class="insta">Instagram</p>
+        <div class="sidebar " style="width: 200px;">
+            <div class="buttons">
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <i class=" fa-solid fa-house" style="font-size: 26px; margin-left: 17px; margin-right: -6px;">
+                        </i>
+                    </div>
+                    <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                        <strong style="font-size: 18px;"> Home</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <i class="fa-solid fa-magnifying-glass"
+                            style="font-size: 26px; margin-left: 17px; margin-right: -6px;"></i>
+                    </div>
+                    <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                        <strong style="font-size: 18px;">Search</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <i class="fa-regular fa-compass"
+                            style="font-size: 26px; margin-left: 17px; margin-right: -6px;color: white;"></i>
+                    </div>
+                    <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                        <strong style="font-size: 18px;">Explore</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row; color: whitesmoke;">
+                    <div>
+                        <svg style="fill:white; height:28px; width:28px; margin-left: 17px; margin-right: -6px;"
+                            xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
+                            viewBox="0 0 50 50">
+                            <path
+                                d="M13.34 4.13L20.26 16H4v-1C4 9.48 8.05 4.92 13.34 4.13zM33.26 16L22.57 16 15.57 4 26.26 4zM46 15v1H35.57l-7-12H35C41.08 4 46 8.92 46 15zM4 18v17c0 6.08 4.92 11 11 11h20c6.08 0 11-4.92 11-11V18H4zM31 32.19l-7.99 4.54C21.68 37.49 20 36.55 20 35.04v-9.08c0-1.51 1.68-2.45 3.01-1.69L31 28.81C32.33 29.56 32.33 31.44 31 32.19z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                        <strong style="font-size: 18px;">Reels</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <i class="fa-regular fa-comment"
+                            style="font-size: 26px; margin-left: 17px; margin-right: -6px;"></i>
+                    </div>
+                    <div class="names" style="margin-top: 4px;margin-bottom: 27px;">
+                        <strong style="font-size: 18px;">Messages</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <i class="fa-regular fa-heart"
+                            style="font-size: 26px; margin-left: 17px; margin-right: -6px;"></i>
+                    </div>
+                    <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                        <strong style="font-size: 18px;">Notifications</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <i class="fa-regular fa-square-plus"
+                            style="font-size: 26px; margin-left: 17px; margin-right: -6px;"></i>
+                    </div>
+                    <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                        <strong style="font-size: 18px;">Create</strong>
+                    </div>
+                </div>
+                <div class="battu" style="display: flex;flex-direction: row;">
+                    <div>
+                        <img style="height: 35px; width:35px; border-radius: 50px;margin-left: 12px; margin-right: -6px;"
+                            src="jamuna.jpg">
+                    </div>
+                    <div class="names"
+                        style="margin-top: 5px; margin-bottom: 27px; margin-left: 17px; margin-right: -6px;">
+                        <strong style="font-size: 18px;"> Profile</strong>
+                    </div>
+                </div>
+                <div class="down">
+                    <div class="battu" style="display: flex;flex-direction: row;">
+                        <div>
+                            <svg style="height:28px; width:28px;margin-left: 15px; margin-right: -9px; "
+                                xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
+                                viewBox="0,0,256,256" style="fill:white">
+                                <g fill="white" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                                    stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+                                    stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none"
+                                    text-anchor="none" style="mix-blend-mode: normal">
+                                    <g transform="scale(5.12,5.12)">
+                                        <path
+                                            d="M13.33203,4c-5.14249,0 -9.33203,4.18954 -9.33203,9.33203v23.33594c0,5.14249 4.18954,9.33203 9.33203,9.33203h23.33594c5.14249,0 9.33203,-4.19061 9.33203,-9.33398v-23.33398c0,-5.14249 -4.19061,-9.33203 -9.33398,-9.33203zM13.33203,6h23.33399c4.06263,0 7.33398,3.27052 7.33398,7.33203v23.33399c0,4.06263 -3.27052,7.33398 -7.33203,7.33398h-23.33594c-4.06151,0 -7.33203,-3.27052 -7.33203,-7.33203v-23.33594c0,-4.06151 3.27052,-7.33203 7.33203,-7.33203zM15.39844,11.07227c-0.65256,0 -1.35863,0.43775 -1.59375,1.15234c-0.37105,1.12815 -1.25426,2.0128 -2.38086,2.38281c-0.71424,0.23468 -1.15234,0.93972 -1.15234,1.5918c0,0.65256 0.43775,1.35667 1.15234,1.5918c1.1275,0.3711 2.00985,1.2548 2.38086,2.38281c0.23497,0.71413 0.94114,1.15234 1.59375,1.15234c0.65261,0 1.35682,-0.43821 1.5918,-1.15234c0.3711,-1.1275 1.25285,-2.01181 2.38086,-2.38281c0.71413,-0.23497 1.15234,-0.93918 1.15234,-1.5918c0,-0.65261 -0.43821,-1.35682 -1.15234,-1.5918c-1.12696,-0.37092 -2.00954,-1.25362 -2.38086,-2.38086v-0.00195c-0.23468,-0.71424 -0.93972,-1.15234 -1.5918,-1.15234zM30.64258,12.95508c-0.70272,0 -1.45881,0.4666 -1.71289,1.23828l-1.13086,3.44141c-0.45805,1.39305 -1.5508,2.48428 -2.94531,2.94336l-3.43945,1.13281c-0.77179,0.25377 -1.24023,1.0077 -1.24023,1.71094c0,0.70323 0.46844,1.45912 1.24023,1.71289l3.44141,1.13086c1.39305,0.45805 2.48329,1.54927 2.94141,2.94336l1.13281,3.44141c0.25377,0.77179 1.0077,1.24023 1.71094,1.24023c0.70323,0 1.45912,-0.46844 1.71289,-1.24023l1.13086,-3.44141c0.45805,-1.39305 1.54988,-2.48435 2.94336,-2.94336l3.44141,-1.13086c0.77179,-0.25377 1.23828,-1.00966 1.23828,-1.71289c0,-0.70323 -0.46649,-1.45717 -1.23828,-1.71094l-3.44141,-1.13281c-1.39251,-0.45787 -2.485,-1.54913 -2.94336,-2.94141v-0.00195l-1.13086,-3.44141c-0.25408,-0.77168 -1.00822,-1.23828 -1.71094,-1.23828zM15.39844,13.34961c0.57517,1.27948 1.56894,2.27459 2.84766,2.84961c-1.27987,0.57513 -2.27254,1.57059 -2.84766,2.84961c-0.57528,-1.28019 -1.57014,-2.27457 -2.84961,-2.84961c1.27965,-0.5748 2.27456,-1.56948 2.84961,-2.84961zM30.64063,15.39063l0.94531,2.86914c0.65595,1.99495 2.22185,3.5628 4.2168,4.21875l2.87109,0.94336l-2.87109,0.94336c-1.99452,0.65699 -3.56084,2.2238 -4.2168,4.21875l-0.94531,2.87109l-0.94336,-2.87109c-0.6557,-1.99537 -2.22262,-3.56248 -4.2168,-4.21875h-0.00195l-2.86914,-0.94336l2.87109,-0.94336c1.99549,-0.65692 3.56084,-2.2238 4.2168,-4.21875zM18.60742,27.39648c-0.70272,0 -1.45881,0.4666 -1.71289,1.23828l-0.13867,0.42188v0.00195c-0.45805,1.39305 -1.54988,2.48435 -2.94336,2.94336l-0.42187,0.13867c-0.77085,0.25428 -1.23828,1.00818 -1.23828,1.71094c0,0.70276 0.46743,1.45861 1.23828,1.71289l0.42188,0.13867h0.00195c1.39305,0.45805 2.48336,1.54835 2.94141,2.94141v0.00195l0.13867,0.42188c0.25428,0.77085 1.01014,1.23828 1.71289,1.23828c0.70323,0 1.45717,-0.46844 1.71094,-1.24023l0.13867,-0.41992v-0.00195c0.45805,-1.39305 1.54927,-2.48329 2.94336,-2.94141h0.00195l0.42188,-0.13867c0.77179,-0.25377 1.23828,-1.00966 1.23828,-1.71289c0,-0.70323 -0.46649,-1.45717 -1.23828,-1.71094l-0.42187,-0.13867h-0.00195c-1.39305,-0.45805 -2.48428,-1.5508 -2.94336,-2.94531l-0.13867,-0.42187c-0.25408,-0.77168 -1.00822,-1.23828 -1.71094,-1.23828zM18.60742,29.76172c0.6634,1.92239 2.1682,3.42686 4.08984,4.08984c-1.92205,0.66271 -3.42704,2.16872 -4.08984,4.08984c-0.66279,-1.92112 -2.16872,-3.42706 -4.08984,-4.08984c1.92147,-0.66347 3.42688,-2.16821 4.08984,-4.08984z">
+                                        </path>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="names" style="margin-top: 4px; margin-bottom: 27px; color: white;">
+                            <strong style="font-size: 18px;"> AI Studio</strong>
+                        </div>
+                    </div>
+                    <div class="battu" style="display: flex;flex-direction: row;">
+                        <div>
+                            <i class="fa-brands fa-threads"
+                                style="font-size: 26px; margin-left: 17px; margin-right: -6px;"></i>
+                        </div>
+                        <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                            <strong style="font-size: 18px;"> Threads</strong>
+                        </div>
+                    </div>
+                    <div class="battu" style="display: flex;flex-direction: row;">
+                        <div>
+                            <i class="fa-solid fa-bars"
+                                style="font-size: 26px; margin-left: 17px; margin-right: -6px;"></i>
+                        </div>
+                        <div class="names" style="margin-top: 4px; margin-bottom: 27px;">
+                            <strong style="font-size: 18px;"> More</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="middle">
+            <div style="height: 100vh; width: 2px;
+            background-color: gray ; position: fixed;"></div>
+            <div class="header">
+                <div>
+                    <div style="margin-left: 100px;">
+                        <img class=" profile" src="jothee.jpg">
+                    </div>
+                    <div style="margin-left: 100px;" class="satus">
+                        <p>jotheesh_r..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" src="bhuvi.jpg">
+                    </div>
+                    <div class="satus">
+                        <p>i_am_bhuv..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" src="shannu.jpg">
+                    </div>
+                    <div class="satus">
+                        <p>_sha_nnu..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" src="jam.jpg">
+                    </div>
+                    <div class="satus">
+                        <p>ms_bula_..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" src="punya.jpg">
+                    </div>
+                    <div class="satus">
+                        <p>punya_sri..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" src="jashu.jpg">
+                    </div>
+                    <div class="satus">
+                        <p>_jaa_shu_..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" src="niha.jpg">
+                    </div>
+                    <div class="satus">
+                        <p>niha_rika..
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <img class=" profile" style=" margin-right:70px;" src="keerthi.jpg">
+                    </div>
+                    <div class="satus">
+                        <p style="position: relative;"> Gadd_kee...</p>
+                        <div style="position:absolute;margin-left: 28px; margin-top: -88px; font-size: 3px; ">
+                            <button style="border-radius: 60px; font-size: 20px;"> <i
+                                    class="fa-solid fa-angle-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="posts" style="margin-left: 60px; ">
+                <div>
+                    <div class="post">
+                        <div>
+                            <div class="post-info">
+                                <div class="view_profile">
+                                    <img style="border: 4px solid  rgb(220, 72, 14)" class=" inside_dp" src="bena5.jpg">
+                                    <div class="tooltip">
+                                        <div>
+                                            <div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div>
+                                                        <img style="height: 55px; width:55px; border-radius: 50px;margin-left: 12px; margin-right: -26px; margin-top: 20px;"
+                                                            src="bena5.jpg">
+                                                    </div>
+                                                    <div style="margin-left: 40px; margin-top: 10px;">
+                                                        <p>Kd_boy_Madhav</p>
+                                                        <p style="margin-top: -10px;">Benarji.N</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div style=" margin-left: 40px;margin-right: 90px;">
+                                                        <p style="margin-bottom: -10px; margin-left: 8px;">30</p>
+                                                        <p> Posts</p>
+                                                    </div>
+                                                    <div style="margin-right: 80px;">
+                                                        <p style="margin-bottom: -10px; margin-left: 17px;">400</p>
+                                                        <p>followers</p>
+                                                    </div>
+                                                    <div style="margin-right: 30px; ">
+                                                        <p style="margin-bottom: -10px; margin-left: 17px;">500</p>
+                                                        <p> following</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row; margin-top: 5px;">
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px; margin-left: -2px;margin-right: 2px; border: 2px solid white;"
+                                                            src="bena.jpg">
+                                                    </div>
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px;  margin-right: 2px; border: 2px solid white;"
+                                                            src="bena3.jpg">
+                                                    </div>
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px; border: 2px solid white;"
+                                                            src="bena6.jpg">
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div>
+                                                        <button
+                                                            style="margin-top: 8px;margin-left: 10px; margin-right: 5px; margin-bottom: 13px;  padding: 8px; padding-left: 52px; padding-right: 52px; border-radius: 10px; background-color: skyblue;">
+                                                            <i class="fa-brands fa-facebook-messenger"
+                                                                style="font-size: 16px; margin-left: 6px; color: white;margin-right: -6px;"></i>
+                                                            <strong
+                                                                style="margin-left: 13px; color: white;">Message</strong></button>
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            style="margin-top: 8px; padding-top: 8px;padding-bottom: 10px; padding-left: 52px;padding-right: 52px; border-radius: 10px; background-color:gray;"><strong
+                                                                style="color: white;">Following</strong></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="inside_post">
+                                        <div>
+                                            <div style="margin-top: -7px; ">
+                                                <p>Kd_boy_madhav .1hr </p>
+                                            </div>
+                                            <div class="music">
+                                                <div style="display: flex;flex-direction: row;">
+                                                    <div><i class="fa-solid fa-music"
+                                                            style="color: white; font-size: 13px;"></i></div>
+                                                    <div>
+                                                        &nbspHarrisJayaraj,Krish,Benny,Harish,Sruthi..
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dot" style="margin-left: -74px;">
+                                    <p><strong>...</strong></p>
+                                </div>
+                            </div>
+                            <div style="position: relative;" class="image">
+                                <img class="post_photo" src="bena.jpg">
+                                <div class="tag"
+                                    style="position: absolute; margin-top: -44px; margin-left:10px ;font-size:23px;color: black; pointer;;">
+                                    <i class="fa-solid fa-user"></i>
+                                    <i style="margin-left: 380px; font-size: 17px;" class="fa-solid fa-volume-high"></i>
+                                    <div class="tooltip">
+                                        <div>
+                                            <button
+                                                style="margin-bottom: 0px;  border-radius: 7px; padding: 12px; background-color: black;color: white;">
+                                                Jotheesh_royal</button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                style="margin-left: 350px; margin-top: -550px;margin-bottom: 0px; border-radius: 7px; padding: 12px; background-color: black;color: white;">i_am_bhuvi</button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                style="margin-left: 200px;margin-bottom: 0px; border-radius: 7px; padding: 12px; background-color:black ;color: white;">Ashok_liza</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="down-post">
+                            <div class="likes">
+                                <i class="fa-solid fa-heart"
+                                    style="font-size: 27px; margin-right: 13px; margin-bottom: 5px; color: red; margin-left: 2px;"
+                                    onclick="func1()"></i>
+                                <i class="fa-regular fa-comment" style="font-size: 28px;margin-right: 13px; "></i>
+                                <i class="fa-regular fa-paper-plane" style="font-size: 28px; margin-right: 303px; "></i>
+                                <i class="fa-regular fa-bookmark" style="font-size: 28px;" class="save"></i>
+                               </div>
+                            <div class="channel">
+                                <div class="merge">
+                                    <div>
+                                        <img class="liked" src="ashok1.jpg" style="z-index: 1;">
+                                        <img class="liked" src="bhuvi.jpg">
+                                        <img class="liked" src="jothee.jpg">
+                                    </div>
+                                    <div>
+                                        <p style="margin-left: 22px; margin-top: 35px;">Liked by i_am_bhuvi.v and others
+                                        </p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: -9px; margin-top: 3px;" class="content">
+                                        <strong>Kd_boy_madhav</strong> &nbsp;Don't be disappoint by urself zust Know ur
+                                        worthness 🌟💕 | <strong class="hashtag"> #bmd #post
+                                            #trending</strong>.....<strong class="hashtag">more</strong></p>
+                                </div>
+                            </div>
+                            <div class="comments">
+                                <p>View all 42 comments</p>
+                            </div>
+                            <div class="add">
+                                <div class="com" style="margin-top: 20px; margin-bottom: 10px;">
+                                    Add a comment...
+                                    <i style=" margin-left: 313px;" class="fa-regular fa-face-smile"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="line"></p>
+                        <div></div>
+                    </div>
+                    <div class="post">
+                        <div>
+                            <div class="post-info">
+                                <div class="view_profile">
+                                    <img class=" inside_dp" src="SUN.jpg">
+                                    <div class="tooltip">
+                                        <div>
+                                            <div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div>
+                                                        <img style="height: 55px; width:55px; border-radius: 50px;margin-left: 12px; margin-right: -26px; margin-top: 20px;"
+                                                            src="SUN.jpg">
+                                                    </div>
+                                                    <div style="margin-left: 40px; margin-top: 10px;">
+                                                        <p>Sun_news</p>
+                                                        <p style="margin-top: -10px;">Sun news tamil</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div style=" margin-left: 40px;margin-right: 90px;">
+                                                        <p style="margin-bottom: -10px; margin-left: 1px;">140K</p>
+                                                        <p> Posts</p>
+                                                    </div>
+                                                    <div style="margin-right: 80px;">
+                                                        <p style="margin-bottom: -10px; margin-left: 15px;">3.7M</p>
+                                                        <p>followers</p>
+                                                    </div>
+                                                    <div style="margin-right: 30px; ">
+                                                        <p style="margin-bottom: -10px; margin-left: 19px;">23</p>
+                                                        <p> following</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row; margin-top: 5px;">
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px; margin-left: -2px;margin-right: 2px; border: 2px solid white;"
+                                                            src="sun3.jpg">
+                                                    </div>
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px;  margin-right: 2px; border: 2px solid white;"
+                                                            src="sun2.jpg">
+                                                    </div>
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px; border: 2px solid white;"
+                                                            src="sun4.jpg">
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div>
+                                                        <button
+                                                            style="margin-top: 8px;margin-left: 10px; margin-right: 5px; margin-bottom: 13px;  padding: 8px; padding-left: 52px; padding-right: 52px; border-radius: 10px; background-color: skyblue;">
+                                                            <i class="fa-brands fa-facebook-messenger"
+                                                                style="font-size: 16px; margin-left: 6px; color: white;margin-right: -6px;"></i>
+                                                            <strong
+                                                                style="margin-left: 13px; color: white;">Message</strong></button>
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            style="margin-top: 8px; padding-top: 8px;padding-bottom: 10px; padding-left: 52px;padding-right: 52px; border-radius: 10px; background-color:gray;"><strong
+                                                                style="color: white;">Following</strong></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="inside_post">
+                                        <div>
+                                            <div style="margin-top: -5px;">
+                                                <p>Sun_news </p>
+                                            </div>
+                                            <div class="music">
+                                                <p></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dot" style="margin-left: 147px;">
+                                    <p><strong>...</strong></p>
+                                </div>
+                            </div>
+                            <div style="position: relative;" class="image">
+                                <img class="post_photo" src="sun3.jpg">
+                            </div>
+                        </div>
+                        <div class="down-post">
+                            <div class="likes">
+                                <i class="fa-regular fa-heart"
+                                    style="font-size: 27px; margin-right: 13px; margin-bottom: 5px; margin-left: 2px;"></i>
+                                <i class="fa-regular fa-comment" style="font-size: 28px;margin-right: 13px; "></i>
+                                <i class="fa-regular fa-paper-plane" style="font-size: 28px; margin-right: 303px; "></i>
+                                <i class="fa-regular fa-bookmark" style="font-size: 28px; "
+                                    class="save"></i>
+                            </div>
+                            <div class="channel">
+                                <div class="merge">
+                                    <div>
+                                        <img class="liked" src="jothee.jpg">
+                                    </div>
+                                    <div>
+                                        <p style="margin-left: 22px; margin-top: 32px;">Liked by jzt_call_me_jaggu and
+                                            others</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: -9px; margin-top: 3px;" class="content">
+                                        <strong>Sun_news</strong> &nbsp;<button
+                                            style="margin-bottom: 4px;border-radius: 40px; width: 16px;height: 16px;background-color: skyblue; ">
+                                            <i class="fa-solid fa-check"
+                                                style="font-size: 11px; margin-left: -4px; font-weight: bolder;"></i>
+                                        </button> <strong class="hashtag"> #Smartயுகம்</strong><strong>| &nbsp;</strong>
+                                        இது வாட்ஸ்அப்பின் புதிய அப்டேட் ..<strong class="hashtag">more</strong></p>
+                                </div>
+  </div>
+                            <div>
+                                <p style="margin-bottom: -10px;">See translation</p>
+                            </div>
+                            <div class="comments">
+                                <p>View all 442 comments</p>
+                            </div>
+                            <div class="add" style="display: flex;flex-direction: column;">
+                                <div class="com" style="margin-top: 20px; margin-bottom: 10px;">
+                                    Add a comment...
+                                </div>
+                                <div style="margin-top: -2px; margin-left: 2px;">
+                                    Febuary 14, 2025
+                                    <i style=" margin-left: 313px; margin-bottom: -110px;"
+                                        class="fa-regular fa-face-smile"></i>
+                                </div>
+                            </div>
+                            <p class="line"></p>
+                        </div>
+                    </div>
+                    <div class="post">
+                        <div>
+                            <div class="post-info">
+                                <div class="view_profile">
+                                    <img class=" inside_dp" src="ashok1.jpg">
+                                    <div class="tooltip">
+                                        <div>
+                                            <div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div>
+                                                        <img style="height: 55px; width:55px; border-radius: 50px;margin-left: 12px; margin-right: -26px; margin-top: 20px;"
+                                                            src="ashok1.jpg">
+                                                    </div>
+                                                    <div style="margin-left: 40px; margin-top: 10px;">
+                                                        <p>Ashok_liza</p>
+                                                        <p style="margin-top: -10px;">nr_ashok</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div style=" margin-left: 40px;margin-right: 90px;">
+                                                        <p style="margin-bottom: -10px; margin-left: 8px;">15</p>
+                                                        <p> Posts</p>
+                                                    </div>
+                                                    <div style="margin-right: 80px;">
+                                                        <p style="margin-bottom: -10px; margin-left: 17px;">523</p>
+                                                        <p>followers</p>
+                                                    </div>
+                                                    <div style="margin-right: 30px; ">
+                                                        <p style="margin-bottom: -10px; margin-left: 17px;">642</p>
+                                                        <p> following</p>
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row; margin-top: 5px;">
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px; margin-left: -2px;margin-right: 2px; border: 2px solid white;"
+                                                            src="ashok3.jpg">
+                                                    </div>
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px;  margin-right: 2px; border: 2px solid white;"
+                                                            src="ashok2.jpg">
+                                                    </div>
+                                                    <div>
+                                                        <img style="height: 140px; width: 127px; border: 2px solid white;"
+                                                            src="ashok5.jpg">
+                                                    </div>
+                                                </div>
+                                                <div style="display: flex; flex-direction: row;">
+                                                    <div>
+                                                        <button
+                                                            style="margin-top: 8px;margin-left: 10px; margin-right: 5px; margin-bottom: 13px;  padding: 8px; padding-left: 52px; padding-right: 52px; border-radius: 10px; background-color: skyblue;">
+                                                            <i class="fa-brands fa-facebook-messenger"
+                                                                style="font-size: 16px; margin-left: 6px; color: white;margin-right: -6px;"></i>
+                                                            <strong
+                                                                style="margin-left: 13px; color: white;">Message</strong></button>
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            style="margin-top: 8px; padding-top: 8px;padding-bottom: 10px; padding-left: 52px;padding-right: 52px; border-radius: 10px; background-color:gray;"><strong
+                                                                style="color: white;">Following</strong></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                     </div>
+                                      </div>
+                                     <div>
+                                     <div class="inside_post">
+                                        <div>
+                                            <div style="margin-top: -8px;">
+                                                <p>Ashok_liza .21h</p>
+                                            </div>
+                                            <div class="music" style="padding-right: 30px;">
+                                                <div>Oooty,Nilagiri</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dot" style="margin-left: 90px;">
+                                    <p><strong>...</strong></p>
+                                </div>
+                            </div>
+                            <div style="position: relative;" class="image">
+                                <img class="post_photo" src="ashok3.jpg">
+                                <div class="tag"
+                                    style="position: absolute; margin-top: -54px; margin-left:10px ; font-size: 23px;color: black; ">
+                                    <i class="fa-solid fa-user"></i>
+                                    <div class="tooltip">
+                                        <div>
+                                            <button
+                                                style="margin-bottom: 0px;  ;border-radius: 7px; padding: 12px; background-color: black;color: white;">
+                                   Orewa_Umesh</button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                style="margin-left: 260px; margin-top: -550px;margin-bottom: 0px; border-radius: 7px; padding: 12px; background-color: black;color: white;">chocky_girl_born_to_disturb</button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                style="margin-left: 150px;margin-bottom: 0px; border-radius: 7px; padding: 12px; background-color:black ;color: white;">mr_sudhir</button>
+                                        </div>
+                                        </div>
+                                      </div>
+                                       </div>
+                                     </div>
+                        <div class="down-post">
+                            <div class="likes">
+                                <i class="fa-solid fa-heart"
+                                    style="font-size: 27px; margin-right: 13px; margin-bottom: 5px; color: red; margin-left: 2px;"></i>
+                                <i class="fa-regular fa-comment" style="font-size: 28px;margin-right: 13px; "></i>
+                                <i class="fa-regular fa-paper-plane" style="font-size: 28px; margin-right: 303px; "></i>
+                                <i class="fa-regular fa-bookmark" style="font-size: 28px;" class="save"></i>
+                            </div>
+                             <div class="channel">
+                                <div class="merge">
+                                    <div>
+                                        <img class="liked" src="bena5.jpg">
+                                        <img class="liked" src="jothee.jpg">
+                                        <img class="liked" src="jam.jpg">
+                                    </div>
+                                    <div>
+                                        <p style="margin-left: 22px; margin-top: 32px;">Liked by jotheesh.royal and
+                                            others</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p style="margin-bottom: -9px; margin-top: 3px;" class="content">
+                                        <strong>Ashok_liza</strong> &nbsp;" Taking an image,freezing a moment, reveals
+                                        how rich reality is...." '' <strong class="hashtag"> | #camera #addiction
+                                        </strong>.......<strong class="hashtag">more</strong></p>
+                                </div>
+                                        </div>
+                            <div class="comments">
+                                <p>View all 52 comments</p>
+                            </div>
+                            <div class="add">
+                                <div class="com" style="margin-top: 20px; margin-bottom: 10px;">
+                                    Add a comment...
+                                    <i style=" margin-left: 313px;" class="fa-regular fa-face-smile"></i>
+                                </div>
+                          </div>
+                            <p class="line"></p>
+                        </div>
+                    </div>
+                          </div>
+                           </div>
+                        </div>
+        <div class="right">
+   <div class="followers">
+                <div class="myid">
+                    <div>
+                        <img class="profile_right" src="jamuna.jpg">
+                    </div>
+                    <div class="poo">
+                        <p>chocky_girl_born_to_disturb</p>
+                        <div class="jam">
+                            <p>jamuna</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="seeall">
+                        <p>Suggested for you</p>
+                    </div>
+                </div>
+                <div class="myid">
+                    <div>
+                        <img class="profile_right" src="giri.jpg">
+                    </div>
+                    <div class="poo">
+                        <p>Giri_royal</p>
+                        <div class="jam">
+                            <p>Followed by _r.priya_r..+ 9...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="myid">
+                    <div>
+                        <img class="profile_right" src="umesh.jpg">
+                    </div>
+                    <div class="poo">
+                        <p>Orewa_Umesh</p>
+                        <div class="jam">
+                            <p>Followed by _sha_nnu..+ 9...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="myid">
+                    <div>
+                        <img class="profile_right" src="kavya.jpg">
+                    </div>
+                    <div class="poo">
+                        <p>_kavya_guggilla</p>
+                        <div class="jam">
+                            <p>Followed by mr_bena_.+ 4...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="myid">
+                    <div>
+                        <img class="profile_right" src="nrfm.jpg">
+                    </div>
+                    <div class="poo">
+                        <p>_nrfm_vlogs</p>
+                        <div class="jam">
+                            <p>Suggested for you</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="myid">
+                    <div>
+                        <img class="profile_right" src="fayas.jpg">
+                    </div>
+                    <div class="poo">
+                        <p>fayas_official </p>
+                        <div class="jam">
+                            <p>Followed by chocky_..+14...</p>
+                        </div>
+                    </div>
+                </div>
+                <p style=" color: white; margin-bottom: -12px; font-size: 15px;">
+                    About.Help.Press.API.Jobs.Privacy.Terms.</p>
+                <p style="color: white;margin-bottom: 23px; font-size: 15px;">Locations,.Language.meta Verified</p>
+                <div style="display: flex; flex-direction: row;">
+                    <div>
+                        <button
+                            style=" height: 17px;width: 17px;color:rgb(239, 237, 237); border-radius: 40px; background-color: gray;padding-left:-140px; margin-right: 5px;padding-right: 5px;display: flex; justify-content: center; align-items: center;">c</button>
+                    </div>
+                    <div>
+                        <p style="margin: 0px; color: white;"> 2025 INSTAGRAM FROM META </p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="switch">
+                    <p>Switch</p>
+                </div>
+                <div>
+                    <p class="see">See All</p>
+                </div>
+                <div class="switch">
+                    <p>Follow</p>
+                </div>
+                <div class="switch">
+                    <p>Follow</p>
+                </div>
+                <div class="switch">
+                    <p>Follow</p>
+                </div>
+                <div class="switch">
+                    <p>Follow</p>
+                </div>
+                <div class="switch">
+                    <p>Follow</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    </div>
+    </div>
+    </div>
+</body>
+</html>
