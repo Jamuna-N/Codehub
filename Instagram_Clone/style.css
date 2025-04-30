@@ -1,0 +1,305 @@
+body{
+    background-color:rgb(53, 51, 51);
+    color: white;
+}
+.post_photo{
+    height:490px;
+    width: 445px;  
+    background-color: grey;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(13, 13, 13);
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 3px grey ;
+    cursor: pointer;
+}
+.profile{
+    border-radius: 40px;
+    border-width: 3.5px;
+    border-style: solid;
+    border-color: rgb(220, 72, 14);
+    height: 65px;
+    width: 65px;
+    display: inline;
+    margin-right: 14px;
+    cursor: pointer;
+}
+.prof{
+border-radius: 111px;
+height: 30px;
+width: 30px;
+margin-right: 12px;
+}
+.profile_right{
+    height: 53px;
+    width: 53px;
+    border-radius: 30px;
+    margin-right: 15px;
+}
+.inside_dp{
+    height: 50px;
+    width: 50px;
+    border-radius: 30px;
+    
+}
+.satus{
+    margin-top: -15px;
+    margin-left: -5px;
+    margin-right: 15px;
+    width: 45px;
+}
+.dp{
+    border-radius: 30px;
+    border-width: 3.5px;
+    border-style: solid;
+    border-color: rgb(220, 72, 14);
+    height: 70px;
+    width: 70px;
+    display: inline-block;
+    margin-right: 5px;
+}
+.post{
+    margin-left: 125px;
+    margin-right: 70px;
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+   margin-bottom: 20px;
+    width: 460px;
+    padding-right: 40px;
+   
+}
+.jam{
+    width: 190px;
+}
+.down-post{
+   margin-bottom: 2px;
+}
+.center{
+    display: flex;
+    flex-direction: column;
+}
+.header{
+    margin-bottom: 29px;
+    display: flex;
+    flex-direction: row;   
+}
+.post-info{
+    display: flex;
+    flex-direction: row;
+}
+
+.view_profile .tooltip{
+    position: absolute;
+    visibility: hidden;
+    background-color: rgb(59, 58, 58);
+    padding: 4px;
+    width: 390px;
+    border-radius: 15px;
+    margin-top: -37px;
+    margin-left: -10px;
+    opacity: 0;
+    z-index: 1;
+    color: white;
+    box-shadow: inset 1px 1px 3px grey ;
+    transform: scale(0.85);
+    transition: opacity 0.5s;
+}
+.view_profile:hover .tooltip{
+    opacity: 1;
+    transition: opacity 1.5s;
+    visibility: visible;
+}
+.tag .tooltip{
+    position: absolute;
+    visibility: hidden;
+    transform: scale(0.85);
+    transition: opacity 0.5s;
+    margin-top: -300px;
+    border-radius: 15px;
+    padding: 20px;
+    margin-left: -22px;
+    opacity: 0;
+    z-index: 1;
+    color: white;
+}
+.tag:hover .tooltip{
+    opacity: 1;
+    transition: opacity 1.5s;
+    visibility: visible;
+}
+.inside_post{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-right: 150px;
+}
+.dot{
+    font-size: 25px;
+    font-weight: bolder;
+    margin-top: -10px;
+    margin-left: 60px;
+}
+.music{
+    margin-top: -15px;
+}
+.sidebar
+{
+    display: inline-block;
+    position: fixed;
+    margin-top: 100px;
+    margin-right: 70px;
+}
+.middle{
+    display: inline-block;
+    margin-left: 250px;
+    margin-right: 100px;
+}
+.insta
+{
+    margin-left: 25px;
+    top: 0;
+    position: fixed;
+    left: 0;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 30px;
+    font-weight: bolder;
+    color:white;
+} 
+.middle{
+    margin-right: 10px;
+}
+.AI{
+    margin-top: 15px;
+}
+.complete{
+    display: flex;
+    flex-direction: row;
+}
+.myid{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+}
+.right{
+    margin-left: -10px;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.sidebar{
+    display: flex;
+    flex-direction: row;
+}
+.names{
+    justify-content: space-between;
+    margin-left: 20px;
+    position: relative;
+}
+.down{
+    margin-top: 70px;
+    justify-content: space-between;
+}
+.down-img{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.buttons{
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+
+}
+.battu:hover{
+    background-color: gray;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 200px;
+}
+.switch{
+    margin-left: 45px;
+    color: rgb(8, 172, 237);
+    margin-top: 9px;
+    font-weight: bold;
+    padding-bottom: 25px;
+    padding-top: -60px;
+    margin-bottom: 10px;
+}
+.seeall{
+    display: flex;
+    flex-direction: row;
+}
+.see{
+   padding-bottom: 19px;
+   margin-left: 45px;
+}
+.jam{
+    margin-top: -17px;
+}
+.poo{
+    margin-top:-8px;
+}
+.liked{
+    height: 23px;
+    width: 23px;
+    border-radius:40px ;
+    margin-top: 30px;
+    margin-right: -15px;   
+}
+.merge{
+    display: flex;
+    flex-direction: row;
+}
+.likes{
+    margin-top: 2px;
+    margin-bottom: -22px;
+}
+.channel{
+    display: flex;
+    flex-direction: column;
+    margin-top: -25px;
+}
+.hashtag{
+    color: rgb(6, 133, 183);
+    font: bolder;
+}
+.content{
+    font-size: 15px;
+}
+.translation{
+    margin-top: -22px;
+    margin-bottom: -12px
+}
+.add{
+    margin-top: -27px;
+    display: flex;
+    flex-direction: row;
+}
+    
+.emoji{
+    margin-left:350px;
+    margin-top: -6px;
+}
+.line
+{
+    margin-top: 5px;
+    border: 2px solid #ccc;
+}
+.save{
+    margin-left: 460px;
+}
+.tick{
+    border-radius: 150px;
+    color: blue;
+    padding-bottom: -36px;
+    padding-top: -44px;
+    margin-top: 13px;
+    background-color: skyblue;
+    margin-left: -1px;  
+}
+.right{
+    display: flex;
+    flex-direction: row;
+}
