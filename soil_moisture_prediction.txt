@@ -1,0 +1,491 @@
+import os
+import re
+import csv
+import pickle
+from datetime import datetime, timedelta
+from collections import defaultdict
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
+from scipy.signal import lombscargle
+import openpyxl
+
+# ===================== CONSTANTS =====================
+FREQ_MIN, FREQ_MAX, FREQ_POINTS = 0.05, 0.5, 1000
+H_eff_MIN, H_eff_MAX = 1.7, 1.9
+
+# Wavelength map by system and service
+WAVELENGTHS = {
+    "GPS": {
+        "L1": 0.190, "L1CA": 0.190,
+        "L2": 0.244, "L2CS": 0.244,
+        "L5": 0.254
+    },
+    "GLONASS": {
+        "L1": 0.187, "L2": 0.244,
+        "GloL1CA": 0.187, "GloL2CA": 0.244
+    },
+    "Galileo": {
+        "E1": 0.190,
+        "E5a": 0.254, "E5b": 0.247,
+        "E5a+b": 0.251
+    },
+    "BeiDou": {
+        "B1": 0.192, "B1C": 0.192,
+        "B2": 0.248, "B2a": 0.247, "B2b": 0.240
+    }
+}
+
+# ===================== TIME CONVERSION & DATE HANDLING =====================
+def is_leap_year(year):
+    """Determine if a year is a leap year."""
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
+
+def get_days_in_month(year, month):
+    """Return the number of days in a month, accounting for leap years."""
+    if month in {1, 3, 5, 7, 8, 10, 12}:  # Months with 31 days
+        return 31
+    elif month in {4, 6, 9, 11}:  # Months with 30 days
+        return 30
+    elif month == 2:  # February
+        return 29 if is_leap_year(year) else 28
+    else:
+        raise ValueError("Invalid month")
+
+def extract_timestamp(line):
+    """Extract timestamp from line with robust date handling."""
+    try:
+        parts = re.findall(r'\d+\.\d+|\d+', line)
+        if len(parts) < 6: 
+            return None
+            
+        year, month, day = int(parts[0]), int(parts[1]), int(parts[2])
+        hour, minute, second = int(parts[3]), int(parts[4]), round(float(parts[5]))
+        
+        # Handle time overflow
+        if second >= 60:
+            second = 0
+            minute += 1
+        if minute >= 60:
+            minute = 0
+            hour += 1
+        if hour >= 24:
+            hour = 0
+            day += 1
+        
+        # Handle day overflow with leap year awareness
+        while day > get_days_in_month(year, month):
+            day -= get_days_in_month(year, month)
+            month += 1
+            if month > 12:
+                month = 1
+                year += 1
+        
+        # Create datetime object
+        try:
+            gmt_time = datetime(year, month, day, hour, minute, second)
+        except ValueError as e:
+            if "second must be in" in str(e):
+                # Handle potential leap second case
+                second = 0
+                minute += 1
+                gmt_time = datetime(year, month, day, hour, minute, second)
+            else:
+                raise
+        
+        # Convert to IST (UTC+5:30)
+        return gmt_time + timedelta(hours=5, minutes=30)
+        
+    except Exception as e:
+        print(f"Error parsing timestamp: {e}")
+        return None
+
+# ===================== DATA PROCESSING & FILTERING =====================
+def get_wavelength(system, service):
+    """Get wavelength for given system and service."""
+    try:
+        return WAVELENGTHS.get(system, {}).get(service, 0.190)
+    except:
+        return 0.190
+
+def sanitize_filename(name):
+    """Create safe filename by removing special characters."""
+    return re.sub(r'[^a-zA-Z0-9_-]', '', name.replace(" ", "_"))
+
+def remove_empty_folders(folder):
+    """Remove empty folders in directory tree."""
+    for root, dirs, _ in os.walk(folder, topdown=False):
+        for d in dirs:
+            dir_path = os.path.join(root, d)
+            if not os.listdir(dir_path): 
+                os.rmdir(dir_path)
+    if not os.listdir(folder): 
+        os.rmdir(folder)
+
+def linear_detrend(y):
+    """Remove linear trend from data."""
+    x = np.arange(len(y))
+    coeffs = np.polyfit(x, y, 1)
+    trend = np.polyval(coeffs, x)
+    return y - trend, coeffs
+
+# ===================== LOMB-SCARGLE PERIODOGRAM =====================
+def lomb_scargle(elevation, cn0, wavelength):
+    """Calculate Lomb-Scargle periodogram."""
+    if elevation is None or cn0 is None or len(elevation) < 2:
+        return 0, 0, [], []
+    
+    time = np.linspace(0, len(elevation) - 1, len(elevation))
+    freqs = np.linspace(FREQ_MIN, FREQ_MAX, FREQ_POINTS)
+    power = lombscargle(time, cn0, 2 * np.pi * freqs)
+    peak_idx = np.argmax(power)
+    peak_freq = freqs[peak_idx]
+    A_LSP = power[peak_idx]
+    H_eff = (1 / (2 * peak_freq)) * wavelength if peak_freq > 0 else 0
+    return A_LSP, H_eff, freqs, power
+
+def plot_lomb_scargle(freqs, power, filename):
+    """Generate LSP plot."""
+    plt.figure(figsize=(6, 4))
+    plt.plot(1 / (2 * freqs), power, 'r-', linewidth=1)
+    plt.xlabel("Reflector Height (m)")
+    plt.ylabel("Power (V/V)")
+    plt.title("Lomb-Scargle Periodogram")
+    plt.grid(True)
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+    plt.savefig(filename)
+    plt.close()
+
+# ===================== H0 & AMPLITUDE CALCULATION =====================
+def estimate_amplitude_phase(elevation, cn0, wavelength, H0):
+    """Estimate amplitude and phase using median H0."""
+    if len(elevation) < 5 or len(cn0) < 5 or not (H_eff_MIN <= H0 <= H_eff_MAX):
+        return 0.0, 0.0
+    
+    k = 4 * np.pi * H0 / wavelength
+    sin_term = np.sin(np.deg2rad(elevation))
+    X = np.column_stack([np.cos(k * sin_term), np.sin(k * sin_term)])
+    
+    try:
+        result, _, _, _ = np.linalg.lstsq(X, cn0, rcond=None)
+        A = np.sqrt(result[0]*2 + result[1]*2)
+        phase = np.degrees(np.arctan2(result[1], result[0]))
+        return A, phase
+    except:
+        return 0.0, 0.0
+
+# ===================== SNR METRICS CALCULATION =====================
+def calculate_metrics(results_df):
+    """Calculate all SNR metrics and return enhanced DataFrame."""
+    # Calculate top 20% mean of amplitude
+    amp_sorted = results_df['Amplitude'].sort_values(ascending=False)
+    top20_amp = amp_sorted[:int(len(amp_sorted)*0.2)]
+    top20_mean_amp = top20_amp.mean() if len(top20_amp) > 0 else 1.0
+    
+    # Calculate top 20% mean of ALSP
+    alsp_sorted = results_df['A_LSP'].sort_values(ascending=False)
+    top20_alsp = alsp_sorted[:int(len(alsp_sorted)*0.2)]
+    top20_mean_alsp = top20_alsp.mean() if len(top20_alsp) > 0 else 1.0
+    
+    # Calculate least 15% mean of phase
+    phase_sorted = results_df['Phase'].sort_values()
+    least15_phase = phase_sorted[:int(len(phase_sorted)*0.15)]
+    least15_mean_phase = least15_phase.mean() if len(least15_phase) > 0 else 0.0
+    
+    # Add new columns
+    results_df['ALSP_norm'] = results_df['A_LSP'] / top20_mean_alsp
+    results_df['A_norm'] = results_df['Amplitude'] / top20_mean_amp
+    results_df['delta_phase'] = results_df['Phase'] - least15_mean_phase
+    results_df['delta_H_eff'] = results_df['H0_median'] - results_df['H_eff'] 
+    
+    return results_df, {
+        'top20_mean_amp': top20_mean_amp,
+        'top20_mean_alsp': top20_mean_alsp,
+        'least15_mean_phase': least15_mean_phase
+    }
+
+# ===================== MAIN PROCESSING FUNCTIONS =====================
+def process_detrended_data_with_median(detrended_data_folder, lsp_results_dir, snr_metrics_dir):
+    """Process detrended data using median H_eff values."""
+    results_list = []
+    satellite_heffs = defaultdict(list)
+    
+    # First pass: collect all H_eff values
+    for file in os.listdir(detrended_data_folder):
+        if file.endswith('.xlsx'):
+            try:
+                file_path = os.path.join(detrended_data_folder, file)
+                prn_data = pd.read_excel(file_path)
+                prn = os.path.splitext(file)[0].split('_')[0]
+                service = prn_data["Service"].iloc[0] if "Service" in prn_data.columns else "Unknown"
+                
+                elevation = prn_data["Elev."].values
+                detrended_cno = prn_data["Detrended C/N0"].values if "Detrended C/N0" in prn_data.columns else prn_data["C/N0"].values
+                
+                system_name = ''.join(filter(str.isalpha, prn))[:7]
+                wavelength = get_wavelength(system_name, service)
+                
+                A_LSP, H_eff, _, _ = lomb_scargle(elevation, detrended_cno, wavelength)
+                if H_eff_MIN <= H_eff <= H_eff_MAX:
+                    satellite_heffs[prn].append(H_eff)
+                    
+            except Exception as e:
+                print(f"Error processing {file}: {str(e)}")
+                continue
+    
+    # Calculate median H_eff for each satellite
+    satellite_median_heff = {prn: np.median(heffs) for prn, heffs in satellite_heffs.items() if heffs}
+    
+    # Second pass: use median H_eff for amplitude estimation
+    for file in os.listdir(detrended_data_folder):
+        if file.endswith('.xlsx'):
+            try:
+                file_path = os.path.join(detrended_data_folder, file)
+                prn_data = pd.read_excel(file_path)
+                prn = os.path.splitext(file)[0].split('_')[0]
+                service = prn_data["Service"].iloc[0] if "Service" in prn_data.columns else "Unknown"
+                
+                elevation = prn_data["Elev."].values
+                detrended_cno = prn_data["Detrended C/N0"].values if "Detrended C/N0" in prn_data.columns else prn_data["C/N0"].values
+                
+                system_name = ''.join(filter(str.isalpha, prn))[:7]
+                wavelength = get_wavelength(system_name, service)
+                H0 = satellite_median_heff.get(prn, 0)
+                
+                if H_eff_MIN <= H0 <= H_eff_MAX:
+                    amp, phase = estimate_amplitude_phase(elevation, detrended_cno, wavelength, H0)
+                    A_LSP, H_eff, freqs, power = lomb_scargle(elevation, detrended_cno, wavelength)
+                    
+                    results_list.append({
+                        'System/PRN': prn,
+                        'Service': service,
+                        'Amplitude': amp,
+                        'Phase': phase,
+                        'H_eff': H_eff,
+                        'H0_median': H0,
+                        'A_LSP': A_LSP,
+                    })
+                    
+                    plot_lomb_scargle(freqs, power, os.path.join(lsp_results_dir, f"{prn}_final_LSP.png"))
+                    
+            except Exception as e:
+                print(f"Error processing {file}: {str(e)}")
+                continue
+    
+    # Save final results
+    if results_list:
+        results_df = pd.DataFrame(results_list)
+        results_df, metrics = calculate_metrics(results_df)
+        
+        # Save metrics information
+        with open(os.path.join(snr_metrics_dir, "Metrics_Summary.txt"), "w") as f:
+            f.write("Metrics Calculation Summary:\n")
+            f.write(f"Top 20% mean amplitude: {metrics['top20_mean_amp']:.4f}\n")
+            f.write(f"Top 20% mean ALSP: {metrics['top20_mean_alsp']:.4f}\n")
+            f.write(f"Least 15% mean phase: {metrics['least15_mean_phase']:.4f}\n")
+        
+        results_df.to_excel(os.path.join(snr_metrics_dir, "SNR_Metrics.xlsx"), index=False)
+        results_df.to_excel(os.path.join(lsp_results_dir, "Final_LSP_results.xlsx"), index=False)
+        
+        # Create H0 summary file
+        with open(os.path.join(lsp_results_dir, "H0_Summary.txt"), "w") as f:
+            f.write("Satellite Median H0 Values:\n")
+            for prn, h0 in satellite_median_heff.items():
+                f.write(f"{prn}: {h0:.3f} m\n")
+
+def plot_cno_by_service_prn(csv_file_path, date_str, output_folder):
+    """Generate plots for each service and PRN."""
+    try:
+        df = pd.read_csv(csv_file_path)
+        df["Hours"] = df["Hours"].astype(int)
+
+        detrended_data_folder = os.path.join(output_folder, "Detrended_Data")
+        os.makedirs(detrended_data_folder, exist_ok=True)
+
+        lsp_results_dir = os.path.join(output_folder, "LSP_results")
+        os.makedirs(lsp_results_dir, exist_ok=True)
+        
+        snr_metrics_dir = os.path.join(output_folder, "SNRMetrics")
+        os.makedirs(snr_metrics_dir, exist_ok=True)
+        
+        results_list = []
+
+        for start_hour in range(0, 24, 2):
+            df_subset = df[(df["Hours"] >= start_hour) & (df["Hours"] < start_hour + 2) & (df["C/N0"] > 0)]
+            if df_subset.empty: 
+                continue
+
+            time_folder = os.path.join(output_folder, f"{start_hour:02d}_{start_hour+2:02d}Hrs")
+            os.makedirs(time_folder, exist_ok=True)
+
+            summary_file_path = os.path.join(time_folder, f"{start_hour:02d}_{start_hour+2:02d}_Report.txt")
+            with open(summary_file_path, "w") as summary_file:
+                summary_file.write(f"Date: {date_str} Time: {start_hour:02d} to {start_hour+2:02d} Hrs\n\n")
+                summary_file.write("Generated Plots:\n")
+                total_plots = 0
+                service_details = {}
+
+                for service in df_subset["Service"].unique():
+                    service_folder = os.path.join(time_folder, sanitize_filename(service))
+                    os.makedirs(service_folder, exist_ok=True)
+
+                    prn_list = []
+                    for prn in df_subset[df_subset["Service"] == service]["System/PRN"].unique():
+                        sanitized_prn = sanitize_filename(prn)
+                        prn_data = df_subset[(df_subset["Service"] == service) & (df_subset["System/PRN"] == prn)]
+                        prn_data = prn_data.drop_duplicates(subset=["Elev."]).sort_values(by="Elev.")
+                        if prn_data.empty: 
+                            continue
+
+                        elev_range = prn_data["Elev."].max() - prn_data["Elev."].min()
+                        cno_range = prn_data["C/N0"].max() - prn_data["C/N0"].min()
+
+                        if elev_range >= 14 and cno_range >= 5:
+                            cno_values = prn_data["C/N0"].values
+                            detrended_cno, coeffs = linear_detrend(cno_values)
+                            prn_data["Detrended C/N0"] = detrended_cno
+
+                            detrended_excel_path = os.path.join(detrended_data_folder, f"{sanitized_prn}_{start_hour:02d}{start_hour+2:02d}.xlsx")
+                            prn_data.to_excel(detrended_excel_path, index=False)
+
+                            excel_path = os.path.join(service_folder, f"{sanitized_prn}.xlsx")
+                            prn_data.to_excel(excel_path, index=False)
+                            
+                            with open(os.path.join(service_folder, f"{sanitized_prn}.pkl"), 'wb') as pkl_file:
+                                pickle.dump({
+                                    'prn': prn,
+                                    'service': service,
+                                    'elevation': prn_data["Elev."].values,
+                                    'cn0': cno_values,
+                                    'detrended_cn0': detrended_cno,
+                                    'coefficients': coeffs,
+                                    'azimuth': prn_data["Azimuth"].values
+                                }, pkl_file)
+
+                            plt.figure(figsize=(8, 4))
+                            plt.plot(prn_data["Elev."], cno_values, 'b-')
+                            plt.xlabel("Elevation (degrees)")
+                            plt.ylabel("C/N0 (dB-Hz)")
+                            plt.title(f"{prn} ({service}) - Normal Plot")
+                            plt.grid(True)
+                            plt.xlim(5, 30)
+                            plt.savefig(os.path.join(service_folder, f"{sanitized_prn}_normal.png"))
+                            plt.close()
+
+                            plt.figure(figsize=(8, 4))
+                            plt.plot(prn_data["Elev."], detrended_cno, 'g-')
+                            plt.xlabel("Elevation (degrees)")
+                            plt.ylabel("Detrended C/N0 (dB-Hz)")
+                            plt.title(f"{prn} ({service}) - Detrended Plot")
+                            plt.grid(True)
+                            plt.xlim(5, 30)
+                            plt.savefig(os.path.join(service_folder, f"{sanitized_prn}_detrended.png"))
+                            plt.close()
+
+                            system_name = ''.join(filter(str.isalpha, prn))[:7]
+                            wavelength = get_wavelength(system_name, service)
+                            A_LSP, H_eff, freqs, power = lomb_scargle(prn_data["Elev."].values, detrended_cno, wavelength)
+                            
+                            if H_eff_MIN <= H_eff <= H_eff_MAX:
+                                amp, phase = estimate_amplitude_phase(prn_data["Elev."].values, detrended_cno, wavelength, H_eff)
+                            else:
+                                amp, phase = 0.0, 0.0
+                                H_eff = 0.0
+                            
+                            plot_lomb_scargle(freqs, power, os.path.join(lsp_results_dir, f"{sanitized_prn}_LSP.png"))
+
+                            if H_eff_MIN <= H_eff <= H_eff_MAX:
+                                results_list.append({
+                                    'System/PRN': sanitized_prn,
+                                    'Service': service,
+                                    'Amplitude': amp,
+                                    'Phase': phase,
+                                    'H_eff': H_eff,
+                                    'A_LSP': A_LSP
+                                })
+
+                            prn_list.append(sanitized_prn)
+                            total_plots += 1
+
+                    if prn_list:
+                        service_details[service] = prn_list
+
+                for service, prns in service_details.items():
+                    summary_file.write(f"{service}: {len(prns)} plots generated\nPRNs: {', '.join(prns)}\n\n")
+                summary_file.write(f"Total Plots Generated: {total_plots}\n")
+
+        process_detrended_data_with_median(detrended_data_folder, lsp_results_dir, snr_metrics_dir)
+        remove_empty_folders(output_folder)
+    except Exception as e:
+        print(f'❌ Error: {e}')
+
+def process_all_txt_files(input_folder):
+    """Process all .txt files in the input folder."""
+    snr_results_folder = os.path.join(os.path.expanduser("~"), "Desktop", "SNR_Results")
+    os.makedirs(snr_results_folder, exist_ok=True)
+    
+    txt_files = [f for f in os.listdir(input_folder) if f.endswith('.txt')]
+    
+    if not txt_files:
+        print("❌ No .txt files found in the input folder.")
+        return
+    
+    for txt_file in txt_files:
+        txt_file_path = os.path.join(input_folder, txt_file)
+        print(f"\nProcessing: {txt_file}")
+        
+        try:
+            with open(txt_file_path, 'r', encoding='utf-8') as txt_file_obj:
+                lines = txt_file_obj.readlines()
+
+            processed_data = []
+            headers = ["System/PRN", "Service", "Elev.", "Azimuth", "C/N0", "Status", "Hours", "Minutes", "Seconds"]
+            processed_data.append(headers)
+            current_timestamp = None
+            initial_date_str = "Unknown_Date"
+
+            for line in lines:
+                line = line.strip()
+                if "Conventional Date" in line:
+                    current_timestamp = extract_timestamp(line)
+                    if current_timestamp:
+                        initial_date_str = current_timestamp.strftime("%d-%m-%Y")
+                elif "|" in line and len(line.split("|")) == 6:
+                    data = [col.strip() for col in line.split("|")]
+                    system_prn, service, elev, azimuth, cn0, status = data
+                    try:
+                        elev, azimuth, cn0 = float(elev), float(azimuth), float(cn0)
+                        if 5 <= elev <= 30 and (0 <= azimuth <= 90 or 270 <= azimuth <= 360):
+                            if current_timestamp:
+                                processed_data.append([
+                                    system_prn, service, elev, azimuth, cn0, status,
+                                    current_timestamp.hour, current_timestamp.minute,
+                                    current_timestamp.second + current_timestamp.microsecond/1_000_000
+                                ])
+                    except: 
+                        continue
+
+            output_folder = os.path.join(snr_results_folder, initial_date_str)
+            os.makedirs(output_folder, exist_ok=True)
+            output_csv_path = os.path.join(output_folder, f"{initial_date_str}_processed.csv")
+
+            if len(processed_data) > 1:
+                with open(output_csv_path, 'w', newline='', encoding='utf-8') as out_file:
+                    writer = csv.writer(out_file)
+                    writer.writerows(processed_data)
+                plot_cno_by_service_prn(output_csv_path, initial_date_str, output_folder)
+            else:
+                print(f"❌ No valid data found in {txt_file} after filtering.")
+                
+        except Exception as e:
+            print(f'❌ Error processing {txt_file}: {e}')
+
+if __name__ == "__main__":
+    input_folder = input("Enter the path to the folder containing TXT files: ").strip()
+    if not os.path.isdir(input_folder):
+        print("❌ Invalid folder path. Please provide a valid directory.")
+    else:
+        process_all_txt_files(input_folder)
+        print("\n✅ Processing complete! Check the SNR_Results folder on your Desktop.")
